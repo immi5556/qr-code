@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <br /><br /><br />
+    <div class="card1" style="margin-bottom: 100px;">
+        <textarea id="text" style="width:var(--card-width);font-size: 5em;" rows="5" placeholder="enter text to generate qr code"></textarea>
+    </div>
+    <div class="card1" style="margin-bottom: 100px;">
+        <button id="btn" style="width:var(--card-width);height: 300px;font-size: 5em;">
+            Generate Qr (SVG)
+        </button>
+    </div>
+    <div class="svg-src">
+    </div>
+    <script>
+        $(function(){
+            $(document).on("click", "#btn", (evt) => {
+                var formData = {
+                    text: $("#text").val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/qrcode",
+                    data: formData,
+                    dataType: "html",
+                    encode: true,
+                }).done(function (data) {
+                    console.log(data);
+                    $(".svg-src").addClass("card");
+                    $(".svg-src").html(data);
+                }).fail(function (data) {
+                    console.log(data);
+                });
+
+                evt.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>
